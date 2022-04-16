@@ -11,9 +11,10 @@ datasource db {
 }
 
 model User {
-  idx   Int    @unique @default(autoincrement())
-  id    String @unique
-  pw    String
-  salt  String
-  email String
+  idx      Int    @unique @default(autoincrement())
+  id       String @unique
+  nickname String
+  pw       String
+  salt     String
+  email    String
 }

@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common'
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime'
 import { sha256 } from 'js-sha256'
 import { nanoid } from 'nanoid'
 import prisma from 'src/utils/prisma'
@@ -15,12 +16,15 @@ export class UsersService {
         data: {
           ...dto,
           pw: hashedPw,
+          nickname: dto.nickname,
           salt,
         },
       })
       return { ok: true }
     } catch (e) {
-      console.log(e)
+      if (e instanceof PrismaClientKnownRequestError) {
+        return { ok: false, error: 'that id or mail already exists' }
+      }
       return { ok: false }
     }
   }
